@@ -10,9 +10,11 @@ import random
 import json
 import colorama
 import logging
+import logging.handlers
 
 load_dotenv()
-log = logging.basicConfig(filename="insta.log", filemode="w")
+
+
 
 class Insta:
     """
@@ -24,10 +26,18 @@ class Insta:
         self.insta.load_settings("hidden/insta_settings.json")
         self.insta.login(os.getenv("user"), os.getenv("pass"))
         print(f"Logged in as {self.insta.username}")
-        self.log = log
-        #self.insta.dump_settings("hidden/insta_settings.json")
+        #self.log = logging.basicConfig(filename="insta.log", filemode="w", level=logging.INFO)
 
-        #print("Saved latest settings")
+        handler = logging.handlers.WatchedFileHandler(
+            os.environ.get("LOGFILE", "hidden/insta.log")
+        )
+        formatter = logging.Formatter(logging.BASIC_FORMAT)
+        handler.setFormatter(formatter)
+        self.log = logging.getLogger()
+        self.log.setLevel(os.environ.get("LOGLEVEL", "INFO"))
+        self.log.addHandler(handler)
+        #self.insta.dump_settings("hidden/insta_settings.json")
+        print("Saved latest settings")
 
     def sleep_random(self) -> None:
         """
@@ -51,7 +61,8 @@ class Insta:
                     # Found a user short
                     new_dict[key] = {
                         "pk": value.pk,
-                        "username": value.username
+                        "username": value.username,
+                        "is_private": value.is_private
                     }
                 else:
                     new_dict[key] = value
@@ -62,47 +73,55 @@ class Insta:
         Should I follow lmao
         """
         for key, value in data.items():
-            if "07" in value["username"] or "08" in value["username"] or "vote" in value["username"] or "2025" in value["username"] or "2026" in value["username"] or "aphs" in value["username"]:
+            ignore = ["07", "08", "vote", "2025", "2026", "exec", "aphs", "hdsb", "burlington", "oakville", "halton"]
+            follow = ["06", "05", "04"]
+            
+            if not value["is_private"]:
+                print(f"[ {colorama.Fore.RED}Avoided{colorama.Style.RESET_ALL} ]  {colorama.Fore.CYAN}{value['username']}{colorama.Style.RESET_ALL} | Reason: PUBLIC ACCOUNT")
+                self.log.info(f"Avoided : {value['username']} | Reason: PUBLIC ACCOUNT")
+
+            elif any(kw in value["username"] for kw in ignore):
                 print(f"[ {colorama.Fore.RED}Avoided{colorama.Style.RESET_ALL} ]  {colorama.Fore.CYAN}{value['username']}{colorama.Style.RESET_ALL} | Reason: USERNAME")
-                log.info(f"Avoided : {value['username']} | Reason: USERNAME")
-            elif "06" in value["username"] or "05" in value["username"] or "04" in value["username"]:
+                self.log.info(f"Avoided : {value['username']} | Reason: USERNAME")
+            
+            elif any(kw in value["username"] for kw in follow):
                 followed = self.insta.user_follow(key)
                 if followed:
                     print(f"[ {colorama.Fore.GREEN}Followed{colorama.Style.RESET_ALL} ] {colorama.Fore.CYAN}{value['username']}{colorama.Style.RESET_ALL} | Reason: USERNAME")
-                    log.info(f"Followed: {value['username']} | Reason: USERNAME")
+                    self.log.info(f"Followed: {value['username']} | Reason: USERNAME")
                 else:
                     print(f"[ {colorama.Fore.RED}Failed{colorama.Style.RESET_ALL} ]   {colorama.Fore.CYAN}{value['username']}{colorama.Style.RESET_ALL} | Reason: FOLLOW FAIL")
-                    log.info(f"Failed:   {value['username']} | Reason: FOLLOW FAIL")
+                    self.log.info(f"Failed:   {value['username']} | Reason: FOLLOW FAIL")
                 self.sleep_random()
             else:
                 user_data = self.insta.user_info_by_username(value["username"])
                 if "06" in user_data.biography or "05" in user_data.biography or "04" in user_data.biography or "2024" in user_data.biography or "2023" in user_data.biography or "2022" in user_data.biography:
                     followed = self.insta.user_follow(key)
                     if followed:
-                        print(f"Followed: {value['username']} | Reason: BIO")
-                        log.info(f"[ {colorama.Fore.GREEN}Followed{colorama.Style.RESET_ALL} ] {colorama.Fore.CYAN}{value['username']}{colorama.Style.RESET_ALL} | Reason: BIO")
+                        print(f"[ {colorama.Fore.GREEN}Followed{colorama.Style.RESET_ALL} ] {colorama.Fore.CYAN}{value['username']}{colorama.Style.RESET_ALL} | Reason: BIO")
+                        self.log.info(f"Followed: {value['username']} | Reason: BIO")
                     else:
                         print(f"[ {colorama.Fore.RED}Failed{colorama.Style.RESET_ALL} ]   {colorama.Fore.CYAN}{value['username']}{colorama.Style.RESET_ALL} | Reason: FOLLOW FAIL")
-                        log.info(f"Failed:   {value['username']} | Reason: FOLLOW FAIL")
+                        self.log.info(f"Failed:   {value['username']} | Reason: FOLLOW FAIL")
                     self.sleep_random()
                 else:
                     print(f"[ {colorama.Fore.MAGENTA}Skipped{colorama.Style.RESET_ALL} ]  {colorama.Fore.CYAN}{value['username']}{colorama.Style.RESET_ALL} | Reason: No matches")
-        
+                    self.log.info(f"Skipped:  {value['username']}| Reason: No matches")
 
     def start(self) -> None:
         """
         Start the bot
         """
-        print("Starting")
+        print("Starting...")
         self.sleep_random()
-        account = "aphs.studco"
-        self.save_account(account)
-        print("Finished account scrape")
+        account = "hdsbschools"
+        #print("Starting account scrape")
+        #self.save_account(account)
+        #print("Finished account scrape")
 
         with open(f"hidden/{account}.json", "r") as file:
             data = json.loads(file.read())
             self.should_i_follow(data)
-
 def main():
     """
     Main func
