@@ -72,7 +72,7 @@ async def main():
                 await asyncio.sleep(random.randint(1, 14))
                 loop.create_task(check_match(match))
                 await asyncio.sleep(1)
-                await match.player.play_card()
+                await place_card()
 
 
 if __name__ == "__main__":
