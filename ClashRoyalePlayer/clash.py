@@ -4,7 +4,6 @@ Automatically plays some cards for you
 
 import asyncio
 import pyautogui as pag
-import time
 import random
 
 
@@ -42,7 +41,6 @@ class Match:
         print("Created a Match")
         self.match = True
         self.player = player
-        loop.run_until_complete(self.run_match())
     
     async def run_match(self) -> None:
         """
@@ -102,9 +100,7 @@ async def main():
             await asyncio.sleep(random.randint(1, 3))
             pag.click(761, 551)
             match = Match(player)
-            
-            
-
+            loop.run_until_complete(match.run_match())
 
 
 if __name__ == "__main__":
