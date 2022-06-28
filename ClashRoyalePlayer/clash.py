@@ -49,14 +49,15 @@ class Match:
         found = pag.locateOnScreen("ClashRoyalePlayer/images/ok.png", region=(610, 650, 110, 60))
         
         if found:
-            self.end_match()
+            await self.end_match()
 
-    def end_match(self) -> None:
+    async def end_match(self) -> None:
         """
         End the match
         """
         self.match = False
         pag.press("2")
+        await asyncio.sleep("5")
 
 
 async def main():
