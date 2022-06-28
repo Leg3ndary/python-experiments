@@ -42,15 +42,6 @@ class Match:
         self.match = True
         self.player = player
 
-    async def check_match(self) -> bool:
-        """
-        Check if the match is still going
-        """
-        found = pag.locateOnScreen("ClashRoyalePlayer/images/ok.png", region=(610, 650, 110, 60))
-        
-        if found:
-            await self.end_match()
-
     async def end_match(self) -> None:
         """
         End the match
@@ -58,6 +49,12 @@ class Match:
         self.match = False
         pag.press("2")
         await asyncio.sleep("5")
+
+async def check_match(match: Match):
+    found = pag.locateOnScreen("ClashRoyalePlayer/images/ok.png", region=(610, 650, 110, 60))
+        
+    if found:
+        await match.end_match()
 
 
 async def main():
@@ -93,7 +90,7 @@ async def main():
             match = Match(player)
             while match.match:
                 await asyncio.sleep(random.randint(1, 14))
-                loop.create_task(match.check_match())
+                loop.create_task(check_match())
                 await asyncio.sleep(1)
                 await match.player.play_card()
 
