@@ -3,7 +3,7 @@ import pyautogui as pag
 
 loop = asyncio.get_event_loop()
 
-async def check_match(self) -> bool:
+async def check_match() -> bool:
     """
     Check if the match is still going
     """
