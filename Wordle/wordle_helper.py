@@ -12,6 +12,7 @@ The above copyright notice and this permission notice shall be included in all
 copies or substantial portions of the Software.
 """
 
+
 def check(word: str, compare: str) -> bool:
     """Marches a word vs a word, returns true or false"""
     for l1, l2 in zip(word, compare):
@@ -21,12 +22,14 @@ def check(word: str, compare: str) -> bool:
             return False
     return True
 
+
 def print_c(count: int):
     """print iterations"""
     if count % 100 == 0:
         print(f"Finished iterating {count} iterations")
     else:
         pass
+
 
 def main():
     find = input("Enter the word using _ to represent unknown letters: ")
@@ -46,6 +49,7 @@ def main():
     print("Finished.")
     for match in matches:
         print(match)
+
 
 if __name__ == "__main__":
     main()

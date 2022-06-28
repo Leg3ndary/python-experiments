@@ -6,13 +6,14 @@ LOWER = "abcdefghijklmnopqrstuvwxyz"
 RCAPS = "ZYXWVUTSRQPONMLKJIHGFEDCBA"
 RLOWER = "zyxwvutsrqponmlkjihgfedcba"
 
+
 def encode(raw_string: str, shift: int) -> str:
     """
     Encode a string using a ceaser cypher shift
     """
     final = ""
     shift = int(shift)
-    
+
     for char in raw_string:
         # Upper case
         if char in CAPS:
@@ -40,13 +41,14 @@ def encode(raw_string: str, shift: int) -> str:
 
     return final
 
+
 def decode(raw_string: str, shift: int) -> str:
     """
     Decode a string using a ceaser cypher shift, essentially goes backwards
     """
     final = ""
     shift = int(shift)
-    
+
     for char in raw_string:
         # Upper case
         if char in RCAPS:
@@ -73,6 +75,7 @@ def decode(raw_string: str, shift: int) -> str:
             final += char
 
     return final
+
 
 # Testing
 print(encode(input("Put something here encode : "), input("Shift: ")))
