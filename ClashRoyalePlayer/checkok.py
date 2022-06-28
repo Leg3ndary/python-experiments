@@ -7,7 +7,7 @@ async def check_match() -> bool:
     """
     Check if the match is still going
     """
-    found = pag.locateOnScreen("images/ok.png", region=(610, 650, 110, 60))
+    found = pag.locateOnScreen("ClashRoyalePlayer/images/ok.png", region=(610, 650, 110, 60))
 
     
     if found:
