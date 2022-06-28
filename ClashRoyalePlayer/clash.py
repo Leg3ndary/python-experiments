@@ -10,51 +10,31 @@ import random
 loop = asyncio.get_event_loop()
 
 
-class Player:
+async def end_match(match) -> None:
     """
-    Player class to play games
+    End the match
     """
-
-    def __init__(self) -> None:
-        """
-        Construct the player class
-        """
-        pass
-
-    async def place_card(self) -> None:
-        """
-        Attempts to place a card
-        """
-        pag.press(str(random.randint(1, 4)))
-        pag.click(random.randint(500, 830), random.randint(363, 570))
+    match = False
+    pag.press("2")
+    await asyncio.sleep("5")
 
 
-class Match:
+async def place_card() -> None:
     """
-    Represents a Match and its related info
+    Attempts to place a card
     """
+    pag.press(str(random.randint(1, 4)))
+    await asyncio.sleep(0.3)
+    pag.click(random.randint(500, 830), random.randint(363, 570))
 
-    def __init__(self, player: Player) -> None:
-        """
-        Constructing the match
-        """
-        print("Created a Match")
-        self.match = True
-        self.player = player
 
-    async def end_match(self) -> None:
-        """
-        End the match
-        """
-        self.match = False
-        pag.press("2")
-        await asyncio.sleep("5")
+async def check_match(match) -> None:
+    found = pag.locateOnScreen(
+        "ClashRoyalePlayer/images/ok.png", region=(610, 650, 110, 60)
+    )
 
-async def check_match(match: Match):
-    found = pag.locateOnScreen("ClashRoyalePlayer/images/ok.png", region=(610, 650, 110, 60))
-        
     if found:
-        await match.end_match()
+        await end_match(match)
 
 
 async def main():
@@ -72,7 +52,7 @@ async def main():
     Tile 18: 830, 570:
 
     TOP 363, BOTTOM 570.
-    
+
     Range for x is 500 to 830
     Range for y is 363 to 570
     """
@@ -80,15 +60,15 @@ async def main():
 
     if not size.width == 1366 and not size.height == 768:
         raise Exception("Please run this program on a 1366x768 screen")
+
     else:
         print("Starting.")
-        player = Player()
         while True:
             pag.click(748, 508)
             await asyncio.sleep(random.randint(1, 3))
             pag.click(761, 551)
-            match = Match(player)
-            while match.match:
+            match = True
+            while match:
                 await asyncio.sleep(random.randint(1, 14))
                 loop.create_task(check_match(match))
                 await asyncio.sleep(1)
