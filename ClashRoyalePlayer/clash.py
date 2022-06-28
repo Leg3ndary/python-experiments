@@ -16,7 +16,6 @@ async def end_match(match) -> None:
     """
     match = False
     pag.press("2")
-    await asyncio.sleep("5")
 
 
 async def place_card() -> None:
@@ -69,10 +68,13 @@ async def main():
             pag.click(761, 551)
             match = True
             while match:
-                await asyncio.sleep(random.randint(1, 14))
-                loop.create_task(check_match(match))
+                if random.randint(0, 1):
+                    pag.press(str(random.randint(1, 4)))
                 await asyncio.sleep(1)
                 await place_card()
+                await asyncio.sleep(random.randint(1, 6))
+                loop.create_task(check_match(match))
+            await asyncio.sleep("7")
 
 
 if __name__ == "__main__":
