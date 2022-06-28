@@ -3,11 +3,12 @@ import pyautogui as pag
 
 loop = asyncio.get_event_loop()
 
-async def check_match() -> None:
+async def check_match(self) -> bool:
     """
     Check if the match is still going
     """
-    found = await loop.run_in_executor(None, pag.locate, "images/ok.png")
+    found = pag.locateOnScreen("images/ok.png", region=(610, 650, 110, 60))
+
     
     if found:
         print("FOUND")
@@ -18,6 +19,6 @@ async def check_match() -> None:
 async def main():
     while True:
         await asyncio.sleep(5)
-        await check_match()
+        loop.create_task(check_match())
 
 loop.run_until_complete(main())
