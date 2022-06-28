@@ -61,6 +61,7 @@ async def main():
         raise Exception("Please run this program on a 1366x768 screen")
 
     else:
+        await asyncio.sleep(3)
         print("Starting.")
         while True:
             pag.click(748, 508)
