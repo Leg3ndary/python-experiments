@@ -41,16 +41,6 @@ class Match:
         print("Created a Match")
         self.match = True
         self.player = player
-    
-    async def run_match(self) -> None:
-        """
-        Run a match
-        """
-        while self.match:
-            await asyncio.sleep(random.randint(1, 14))
-            loop.create_task(self.check_match())
-            await asyncio.sleep(1)
-            await self.player.play_card()
 
     async def check_match(self) -> bool:
         """
@@ -100,7 +90,11 @@ async def main():
             await asyncio.sleep(random.randint(1, 3))
             pag.click(761, 551)
             match = Match(player)
-            loop.run_until_complete(match.run_match())
+            while match.match:
+                await asyncio.sleep(random.randint(1, 14))
+                loop.create_task(match.check_match())
+                await asyncio.sleep(1)
+                await match.player.play_card()
 
 
 if __name__ == "__main__":
