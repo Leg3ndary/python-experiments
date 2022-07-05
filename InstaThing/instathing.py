@@ -2,15 +2,16 @@
 Made for learning python, I don't use this.
 """
 
-import instagrapi
-import os
-from dotenv import load_dotenv
-import time
-import random
 import json
-import colorama
 import logging
 import logging.handlers
+import os
+import random
+import time
+
+import colorama
+import instagrapi
+from dotenv import load_dotenv
 
 load_dotenv()
 

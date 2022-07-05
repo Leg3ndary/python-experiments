@@ -3,9 +3,9 @@ Automatically plays some cards for you
 """
 
 import asyncio
-import pyautogui as pag
 import random
 
+import pyautogui as pag
 
 loop = asyncio.get_event_loop()
 
@@ -28,12 +28,21 @@ async def place_card() -> None:
 
 
 async def check_match(match) -> None:
+    """
+    Check the match's status
+    """
     found = pag.locateOnScreen(
         "ClashRoyalePlayer/images/ok.png", region=(610, 650, 110, 60)
     )
 
     if found:
         await end_match(match)
+
+
+async def emote():
+    """
+    Pick a emote
+    """
 
 
 async def main():

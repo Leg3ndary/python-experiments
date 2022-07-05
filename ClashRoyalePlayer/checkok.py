@@ -1,4 +1,5 @@
 import asyncio
+
 import pyautogui as pag
 
 loop = asyncio.get_event_loop()
