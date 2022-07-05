@@ -95,7 +95,7 @@ async def main():
                 await place_card()
                 await asyncio.sleep(random.randint(1, 6))
                 await check_match(match)
-            await asyncio.sleep(6) # network, speed, whatever
+            await asyncio.sleep(9) # network, speed, whatever
 
 
 if __name__ == "__main__":
