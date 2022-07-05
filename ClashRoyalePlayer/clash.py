@@ -41,13 +41,15 @@ async def check_match(match: bool) -> None:
         await end_match(match)
 
 
-async def emote():
+async def emote() -> None:
     """
     Pick a emote randomly lol
     """
-    pag.click(1, 1)
+    x = (568, 640, 714, 787)
+    y = (524, 586)
+    pag.click(500, 640)
     await asyncio.sleep(random.randint(1, 2) / 5)
-    pag.click()
+    pag.click(random.choice(x), random.choice(y))
 
 
 async def main():
@@ -81,10 +83,13 @@ async def main():
             pag.click(748, 508) # party
             await asyncio.sleep(4)
             pag.click(761, 551)
+            await asyncio.sleep(4)
             match = True
             while match:
                 if random.randint(0, 1):
                     pag.press(str(random.randint(1, 4)))
+                if random.randint(0, 1):
+                    await emote()
                 await asyncio.sleep(1)
                 await place_card()
                 await asyncio.sleep(random.randint(1, 6))
