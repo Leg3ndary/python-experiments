@@ -77,9 +77,9 @@ async def main():
         raise Exception("Please run this program on a 1366x768 screen")
 
     else:
-        await asyncio.sleep(3)
         print("Starting.")
         while True:
+            await asyncio.sleep(3)
             pag.click(748, 508) # party
             await asyncio.sleep(4)
             pag.click(761, 551)
@@ -90,6 +90,7 @@ async def main():
                     pag.press(str(random.randint(1, 4)))
                 if random.randint(0, 1):
                     await emote()
+                await check_match(match)
                 await asyncio.sleep(1)
                 await place_card()
                 await asyncio.sleep(random.randint(1, 6))
