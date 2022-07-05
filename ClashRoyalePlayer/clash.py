@@ -79,7 +79,7 @@ async def main():
         print("Starting.")
         while True:
             pag.click(748, 508) # party
-            await asyncio.sleep(random.randint(1, 3))
+            await asyncio.sleep(4)
             pag.click(761, 551)
             match = True
             while match:
