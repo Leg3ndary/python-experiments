@@ -1,6 +1,9 @@
 import pyautogui as pog
 import time
+
+
 time.sleep(3)
 
-pog.mouseDown(button='left')
-pog.mouseDown(button='right')
+while 1:
+    pog.leftClick()
+    time.sleep(5)
